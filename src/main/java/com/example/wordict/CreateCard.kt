@@ -21,16 +21,20 @@ class CreateCard : AppCompatActivity() {
 
         save_button.setOnClickListener {
             if(word.text.toString().isNotEmpty() && meaning.text.toString().isNotEmpty()  && sentence.text.toString().isNotEmpty()
-                && place_of_encounter.text.toString().isNotEmpty() && synonyms.text.toString().isNotEmpty()){
+                && place_of_encounter.text.toString().isNotEmpty()){
+                var syn = ""
                 var word = word.text.toString()
                 var meaning = meaning.text.toString()
                 var sentence = sentence.text.toString()
                 var placeOfEncounter = place_of_encounter.text.toString()
-                var synonyms = synonyms.text.toString()
+                if (synonyms.text.toString().isNotEmpty()){
+                   syn = synonyms.text.toString()
+                    DataObject.setData(word,meaning, sentence, placeOfEncounter, syn)
+                }
 
-                DataObject.setData(word,meaning, sentence, placeOfEncounter, synonyms)
+                DataObject.setData(word,meaning, sentence, placeOfEncounter, syn)
                 GlobalScope.launch {
-                    database.dao().insertWord(Entity(0,word,meaning,sentence, placeOfEncounter, synonyms))
+                    database.dao().insertWord(Entity(0,word,meaning,sentence, placeOfEncounter, syn))
                 }
                 val intent = Intent(this,MainActivity::class.java)
                 startActivity(intent)
